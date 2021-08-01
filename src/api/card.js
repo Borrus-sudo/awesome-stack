@@ -2,11 +2,11 @@ const express = require("express");
 const router = express.Router();
 const fetchInfo = require("../utils/fetchInfo");
 const createCard = require("../utils/createCard");
-router.get("/", (req, res) => {
+router.get("/", async(req, res) => {
     const query = req.query;
-    fetchInfo(query);
+    const resData = await fetchInfo(query);
     createCard();
-    res.send("<h1>App Working</h1>");
+    res.json(resData);
 });
 
 module.exports = router;
