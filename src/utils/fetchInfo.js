@@ -1,5 +1,22 @@
 const fetch = require("node-fetch");
+const path = require("path");
 // https://raw.githubusercontent.com/${metadata.name}/${repo}/${default_branch}
+const ecosystem = {
+    languages: {
+        html: [],
+        css: [],
+        javascript: [],
+    },
+    frameworks: {
+        "front-end-frameworks": [],
+        "css-frameworks": [],
+        "testing-framework": [],
+    },
+    platforms: [],
+    packageManager: [],
+    bundlers: [],
+    tools: [],
+};
 module.exports = async function(metadata) {
     const baseUrl = `https://api.github.com/repos`;
     const repoFile = new Map();
@@ -30,9 +47,36 @@ module.exports = async function(metadata) {
                     files.push(file.path);
                 }
         }
-        const repoUrl = `https://raw.githubusercontent.com/${metadata.name}/${repo}/${default_branch}`;
+        const repoUrl = `https://raw.githubusercontent.com/${metadata.name}/${repo}/${default_branch}/`;
         repoFile.set(repoUrl, files);
     }
     console.log(repoFile);
-    return { files: repoFile.entries() };
+
+    for (const [key, val] of repoFile) {
+        for (let file of val) {
+            const details = path.parse(file);
+            console.log(details.base);
+            if (details.base === "package.json") {
+                const contents = await fetch(key + details.base).then((res) =>
+                    res.json()
+                );
+                console.log({ contents });
+                const dependencies = [
+                    ...Object.keys(contents.dependencies),
+                    ...Object.keys(contents.devDependencies),
+                ];
+                ecosystem["files"] = dependencies;
+                //Main code goes here
+            } else if (details.base === "package-lock.json") {
+                ecosystem.packageManager.push("npm");
+            } else if (details.base === "yarn.lock") {
+                ecosystem.packageManager.push("yarn");
+            } else if (details.base === "pnpm.lock") {
+                ecosystem.packageManager.push("pnpm");
+            } else if (details.base === "Dockerfile") {
+                ecosystem.tools.push("docker");
+            }
+        }
+    }
+    return { ecosystem };
 };
