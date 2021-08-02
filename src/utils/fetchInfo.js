@@ -1,5 +1,4 @@
 const fetch = require("node-fetch");
-const path = require("path");
 // https://raw.githubusercontent.com/${metadata.name}/${repo}/${default_branch}
 module.exports = async function(metadata) {
     const baseUrl = `https://api.github.com/repos`;
