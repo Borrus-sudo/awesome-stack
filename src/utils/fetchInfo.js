@@ -52,90 +52,91 @@ const svgIdentifier = (dependencies) => {
     }
 };
 module.exports = async function(metadata) {
-        const baseUrl = `https://api.github.com/repos`;
-        const repoFile = new Map();
-        if (!(metadata.name && metadata.repos)) {
-            return {
-                message: "404 name and repos parameter is mandatory",
-            };
-        }
-        for (const repo of metadata.repos.split(",").slice(0, 5)) {
-            const data = await fetch(baseUrl + `/${metadata.name}/${repo}`).then(
-                (res) => res.json()
-            );
-            const files = [];
-            if (data.message === "Not Found") {
-                return {
-                    message: `The repo '${repo}' or username '${metadata.name}' does not seem to exist`,
-                };
-            }
-            const { git_commits_url, default_branch } = data;
-            const payload_url = (git_commits_url || "").replace(
-                "commits{/sha}",
-                `trees/${default_branch}?recursive=1`
-            );
-            if (payload_url) {
-                const payload_data = await fetch(payload_url).then((res) => res.json());
-                if (Array.isArray(payload_data.tree))
-                    for (let file of payload_data.tree) {
-                        files.push(file.path);
-                    }
-            }
-            const repoUrl = `https://raw.githubusercontent.com/${metadata.name}/${repo}/${default_branch}/`;
-            repoFile.set(repoUrl, files);
-        }
-        for (const [key, val] of repoFile) {
-            for (let file of val) {
-                const details = path.parse(file);
-                if (file === "package.json") {
-                    const contents = await fetch(key + details.base).then((res) =>
-                        res.json()
-                    );
-                    const dependencies = [
-                        ...Object.keys(contents.dependencies || {}),
-                        ...Object.keys(contents.devDependencies || {}),
-                    ];
-                    svgIdentifier(dependencies);
-                } else if (
-                    ["yarn.lock", "package-lock.json", "pnpm-lock.yaml"].includes(
-                        details.base
-                    )
-                ) {
-                    ecosystem.packageManager.push(
-                        details.name === "package-lock" ?
-                        "npm" :
-                        details.name === "pnpm-lock" ?
-                        "pnpm" :
-                        details.name
-                    );
-                } else if (
-                    ["netlify.toml", "vercel.json", "heroku.json", "now.json"].includes(
-                        details.base
-                    )
-                ) {
-                    ecosystem.platforms.push(
-                        details.name === "now" ? "vercel" : details.name
-                    );
-                } else if (details.name === "Dockerfile") {
-                    ecosystem.tools.push("docker");
-                }
-                if ([".sass", ".styl", ".scss"].includes(details.ext)) {
-                    ecosystem.css.push(details.ext === ".scss" ? "sass" : details.ext.slice(1));
-                }
-            }
-            const copy = JSON.parse(JSON.stringify(ecosystem));
-            ecosystem = {
-                html: ["html"],
-                css: ["css"],
-                javascript: ["javascript"],
-                "css-frameworks": [],
-                "testing-frameworks": [],
-                "seo-addons": [],
-                frameworks: [],
-                platforms: [],
-                packageManager: [],
-                bundlers: [],
-                tools: [],
-            };
-            return copy;
+    const baseUrl = `https://api.github.com/repos`;
+    const repoFile = new Map();
+    if (!(metadata.name && metadata.repos)) {
+        return {
+            message: "404 name and repos parameter is mandatory",
         };
+    }
+    for (const repo of metadata.repos.split(",").slice(0, 5)) {
+        const data = await fetch(baseUrl + `/${metadata.name}/${repo}`).then(
+            (res) => res.json()
+        );
+        const files = [];
+        if (data.message === "Not Found") {
+            return {
+                message: `The repo '${repo}' or username '${metadata.name}' does not seem to exist`,
+            };
+        }
+        const { git_commits_url, default_branch } = data;
+        const payload_url = (git_commits_url || "").replace(
+            "commits{/sha}",
+            `trees/${default_branch}?recursive=1`
+        );
+        if (payload_url) {
+            const payload_data = await fetch(payload_url).then((res) => res.json());
+            if (Array.isArray(payload_data.tree))
+                for (let file of payload_data.tree) {
+                    files.push(file.path);
+                }
+        }
+        const repoUrl = `https://raw.githubusercontent.com/${metadata.name}/${repo}/${default_branch}/`;
+        repoFile.set(repoUrl, files);
+    }
+    for (const [key, val] of repoFile) {
+        for (let file of val) {
+            const details = path.parse(file);
+            if (file === "package.json") {
+                const contents = await fetch(key + details.base).then((res) =>
+                    res.json()
+                );
+                const dependencies = [
+                    ...Object.keys(contents.dependencies || {}),
+                    ...Object.keys(contents.devDependencies || {}),
+                ];
+                svgIdentifier(dependencies);
+            } else if (
+                ["yarn.lock", "package-lock.json", "pnpm-lock.yaml"].includes(
+                    details.base
+                )
+            ) {
+                ecosystem.packageManager.push(
+                    details.name === "package-lock" ?
+                    "npm" :
+                    details.name === "pnpm-lock" ?
+                    "pnpm" :
+                    details.name
+                );
+            } else if (
+                ["netlify.toml", "vercel.json", "heroku.json", "now.json"].includes(
+                    details.base
+                )
+            ) {
+                ecosystem.platforms.push(
+                    details.name === "now" ? "vercel" : details.name
+                );
+            } else if (details.name === "Dockerfile") {
+                ecosystem.tools.push("docker");
+            }
+            if ([".sass", ".styl", ".scss"].includes(details.ext)) {
+                ecosystem.css.push(details.ext === ".scss" ? "sass" : details.ext.slice(1));
+            }
+        }
+        const copy = JSON.parse(JSON.stringify(ecosystem));
+        ecosystem = {
+            html: ["html"],
+            css: ["css"],
+            javascript: ["javascript"],
+            "css-frameworks": [],
+            "testing-frameworks": [],
+            "seo-addons": [],
+            frameworks: [],
+            platforms: [],
+            packageManager: [],
+            bundlers: [],
+            tools: [],
+        };
+        return copy;
+    };
+}
