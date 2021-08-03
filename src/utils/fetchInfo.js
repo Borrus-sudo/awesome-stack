@@ -1,21 +1,44 @@
 const fetch = require("node-fetch");
 const path = require("path");
-// https://raw.githubusercontent.com/${metadata.name}/${repo}/${default_branch}
+const fs = require("fs");
 const ecosystem = {
-    languages: {
-        html: [],
-        css: [],
-        javascript: [],
-    },
-    frameworks: {
-        "front-end-frameworks": [],
-        "css-frameworks": [],
-        "testing-framework": [],
-    },
+    html: ["html"],
+    css: ["css"],
+    javascript: ["javascript"],
+    frameworks: [],
+    "css-frameworks": [],
+    "testing-framework": [],
     platforms: [],
     packageManager: [],
     bundlers: [],
     tools: [],
+};
+const flattenDirectory = (dir) => {
+    const contents = fs.existsSync(dir) ? fs.readdirSync(dir) : [];
+    const result = [];
+    for (let content of contents) {
+        const contentPath = path.join(dir, content);
+        if (fs.statSync(contentPath).isFile()) {
+            result.push(contentPath);
+        } else {
+            result.push(...flattenDirectory(contentPath));
+        }
+    }
+    return result;
+};
+const svgIdentifier = (dependencies) => {
+    const contents = flattenDirectory(path.resolve(process.cwd(), "./src/svgs"));
+    for (let content of contents) {
+        const { name, dir } = path.parse(content);
+        dependencies.forEach((dependency) => {
+            if (dependency === name) {
+                const { name: folderName } = path.parse(dir);
+                if (ecosystem[folderName]) {
+                    ecosystem[folderName].push(dependency);
+                }
+            }
+        });
+    }
 };
 module.exports = async function(metadata) {
     const baseUrl = `https://api.github.com/repos`;
@@ -50,30 +73,29 @@ module.exports = async function(metadata) {
         const repoUrl = `https://raw.githubusercontent.com/${metadata.name}/${repo}/${default_branch}/`;
         repoFile.set(repoUrl, files);
     }
-    console.log(repoFile);
-
     for (const [key, val] of repoFile) {
         for (let file of val) {
             const details = path.parse(file);
-            console.log(details.base);
             if (details.base === "package.json") {
                 const contents = await fetch(key + details.base).then((res) =>
                     res.json()
                 );
-                console.log({ contents });
                 const dependencies = [
                     ...Object.keys(contents.dependencies),
                     ...Object.keys(contents.devDependencies),
                 ];
-                ecosystem["files"] = dependencies;
-                //Main code goes here
-            } else if (details.base === "package-lock.json") {
-                ecosystem.packageManager.push("npm");
-            } else if (details.base === "yarn.lock") {
-                ecosystem.packageManager.push("yarn");
-            } else if (details.base === "pnpm.lock") {
-                ecosystem.packageManager.push("pnpm");
-            } else if (details.base === "Dockerfile") {
+                svgIdentifier(dependencies);
+            } else if (
+                ["yarn.lock", "package-lock.json", "pnpm.lock"].includes(details.base)
+            ) {
+                ecosystem.packageManager.push(
+                    details.name === "package-lock" ? "npm" : details.name
+                );
+            } else if (
+                ["netlify.toml", "vercel.json", "heroku.json"].includes(details.base)
+            ) {
+                ecosystem.platforms.push(details.name);
+            } else if (details.name === "Dockerfile") {
                 ecosystem.tools.push("docker");
             }
         }
