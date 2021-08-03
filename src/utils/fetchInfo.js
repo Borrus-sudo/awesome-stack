@@ -1,13 +1,13 @@
 const fetch = require("node-fetch");
 const path = require("path");
 const fs = require("fs");
-const ecosystem = {
+let ecosystem = {
     html: ["html"],
     css: ["css"],
     javascript: ["javascript"],
     frameworks: [],
     "css-frameworks": [],
-    "testing-framework": [],
+    "testing-frameworks": [],
     platforms: [],
     packageManager: [],
     bundlers: [],
@@ -100,5 +100,18 @@ module.exports = async function(metadata) {
             }
         }
     }
-    return { ecosystem };
+    const copy = JSON.parse(JSON.stringify(ecosystem));
+    ecosystem = {
+        html: ["html"],
+        css: ["css"],
+        javascript: ["javascript"],
+        frameworks: [],
+        "css-frameworks": [],
+        "testing-frameworks": [],
+        platforms: [],
+        packageManager: [],
+        bundlers: [],
+        tools: [],
+    };
+    return {...copy };
 };
