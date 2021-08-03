@@ -31,7 +31,7 @@ const svgIdentifier = (dependencies) => {
     for (let content of contents) {
         const { name, dir } = path.parse(content);
         dependencies.forEach((dependency) => {
-            if (dependency === name) {
+            if (dependency === name || dependency === `@${name}/core`) {
                 const { name: folderName } = path.parse(dir);
                 if (ecosystem[folderName]) {
                     ecosystem[folderName].push(dependency);
