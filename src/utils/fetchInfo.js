@@ -113,5 +113,5 @@ module.exports = async function(metadata) {
         bundlers: [],
         tools: [],
     };
-    return {...copy };
+    return copy;
 };
