@@ -8,9 +8,9 @@ let ecosystem = {
     "css-frameworks": [],
     "testing-frameworks": [],
     "seo-addons": [],
+    "package-managers": [],
     frameworks: [],
     platforms: [],
-    packageManager: [],
     bundlers: [],
     tools: [],
 };
@@ -24,21 +24,22 @@ const mostUsedElement = (arr) => {
         }
     }
 }
-const flattenDirectory = (dir, ignore = []) => {
+const flattenDirectory = (dir) => {
     const contents = fs.existsSync(dir) ? fs.readdirSync(dir) : [];
     const result = [];
     for (let content of contents) {
         const contentPath = path.join(dir, content);
         if (fs.statSync(contentPath).isFile()) {
             result.push(contentPath);
-        } else if (!ignore.includes(path.parse(contentPath).name)) {
-            result.push(...flattenDirectory(contentPath, ignore));
+        } else {
+            result.push(...flattenDirectory(contentPath));
         }
     }
     return result;
 };
 const svgIdentifier = (dependencies) => {
-    const contents = flattenDirectory(path.resolve(process.cwd(), "./src/svgs"), ["package-managers"]);
+    console.log({ dependencies });
+    const contents = flattenDirectory(path.resolve(process.cwd(), "./src/svgs"));
     for (let content of contents) {
         const { name, dir } = path.parse(content);
         dependencies.forEach((dependency) => {
@@ -85,23 +86,23 @@ module.exports = async function(metadata) {
         repoFile.set(repoUrl, files);
     }
     for (const [key, val] of repoFile) {
+        const dependencies = [];
         for (let file of val) {
             const details = path.parse(file);
             if (file === "package.json") {
                 const contents = await fetch(key + details.base).then((res) =>
                     res.json()
                 );
-                const dependencies = [
+                dependencies.push(...[
                     ...Object.keys(contents.dependencies || {}),
                     ...Object.keys(contents.devDependencies || {}),
-                ];
-                svgIdentifier(dependencies);
+                ]);
             } else if (
                 ["yarn.lock", "package-lock.json", "pnpm-lock.yaml"].includes(
                     details.base
                 )
             ) {
-                ecosystem.packageManager.push(
+                dependencies.push(
                     details.name === "package-lock" ?
                     "npm" :
                     details.name === "pnpm-lock" ?
@@ -113,30 +114,31 @@ module.exports = async function(metadata) {
                     details.base
                 )
             ) {
-                ecosystem.platforms.push(
+                dependencies.push(
                     details.name === "now" ? "vercel" : details.name
                 );
             } else if (details.name === "Dockerfile") {
-                ecosystem.tools.push("docker");
+                dependencies.push("docker");
             }
             if ([".sass", ".styl", ".scss"].includes(details.ext)) {
-                ecosystem.css.push(details.ext === ".scss" ? "sass" : details.ext.slice(1));
+                dependencies.push(details.ext === ".scss" ? "sass" : details.ext.slice(1));
             }
         }
-        const copy = JSON.parse(JSON.stringify(ecosystem));
-        ecosystem = {
-            html: ["html"],
-            css: ["css"],
-            javascript: ["javascript"],
-            "css-frameworks": [],
-            "testing-frameworks": [],
-            "seo-addons": [],
-            frameworks: [],
-            platforms: [],
-            packageManager: [],
-            bundlers: [],
-            tools: [],
-        };
-        return copy;
+        svgIdentifier(Array.from(new Set(dependencies)));
     };
+    const copy = JSON.parse(JSON.stringify(ecosystem));
+    ecosystem = {
+        html: ["html"],
+        css: ["css"],
+        javascript: ["javascript"],
+        "css-frameworks": [],
+        "testing-frameworks": [],
+        "seo-addons": [],
+        "package-managers": [],
+        frameworks: [],
+        platforms: [],
+        bundlers: [],
+        tools: [],
+    };
+    return copy;
 }
