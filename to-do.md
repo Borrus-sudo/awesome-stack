@@ -4,3 +4,5 @@ add icons for
 - D3
 - chart.js
 - mermaid
+- parcel
+- vuepress

@@ -1,29 +1,18 @@
 const fetch = require("node-fetch");
 const path = require("path");
 const fs = require("fs");
-let ecosystem = {
-    html: ["html"],
-    css: ["css"],
-    javascript: ["javascript"],
-    "testing-frameworks": [],
-    "seo-addons": [],
-    "package-managers": [],
-    "nodejs": ["nodejs"],
-    platforms: [],
-    bundlers: [],
-    tools: [],
-};
+
 const mostUsedElement = (arr) => {
     const frequencyTable = new Map();
     for (let elem of arr) {
         if (frequencyTable.get(elem)) {
-            frequencyTable.set(elem, ++frequencyTable.get(elem));
+            frequencyTable.set(elem, frequencyTable.get(elem) + 1);
         } else {
             frequencyTable.set(elem, 1);
         }
     }
     return frequencyTable;
-}
+};
 const flattenDirectory = (dir) => {
     const contents = fs.existsSync(dir) ? fs.readdirSync(dir) : [];
     const result = [];
@@ -37,8 +26,7 @@ const flattenDirectory = (dir) => {
     }
     return result;
 };
-const svgIdentifier = (dependencies) => {
-    console.log({ dependencies });
+const svgIdentifier = (dependencies, ecosystem) => {
     const contents = flattenDirectory(path.resolve(process.cwd(), "./src/svgs"));
     for (let content of contents) {
         const { name, dir } = path.parse(content);
@@ -55,6 +43,20 @@ const svgIdentifier = (dependencies) => {
 module.exports = async function(metadata) {
     const baseUrl = `https://api.github.com/repos`;
     const repoFile = new Map();
+    let ecosystem = {
+        html: [],
+        css: [],
+        javascript: [],
+        "testing-frameworks": [],
+        "front-end-frameworks": [],
+        "css-frameworks": [],
+        "seo-addons": [],
+        "package-managers": [],
+        nodejs: [],
+        platforms: [],
+        bundlers: [],
+        tools: [],
+    };
     if (!(metadata.name && metadata.repos)) {
         return {
             message: "404 name and repos parameter is mandatory",
@@ -78,23 +80,25 @@ module.exports = async function(metadata) {
         if (payload_url) {
             const payload_data = await fetch(payload_url).then((res) => res.json());
             if (Array.isArray(payload_data.tree))
-                files.push(...payload_data.tree.map(elem => elem.path));
+                files.push(...payload_data.tree.map((elem) => elem.path));
         }
         const repoUrl = `https://raw.githubusercontent.com/${metadata.name}/${repo}/${default_branch}/`;
         repoFile.set(repoUrl, files);
     }
     for (const [key, val] of repoFile) {
         const dependencies = [];
+        let pkgCount = 1;
         for (let file of val) {
             const details = path.parse(file);
-            if (file === "package.json") {
-                const contents = await fetch(key + details.base).then((res) =>
-                    res.json()
+            if (details.base === "package.json" && pkgCount <= 5) {
+                const contents = await fetch(key + file).then((res) => res.json());
+                dependencies.push(
+                    ...[
+                        ...Object.keys(contents.dependencies || {}),
+                        ...Object.keys(contents.devDependencies || {}),
+                    ]
                 );
-                dependencies.push(...[
-                    ...Object.keys(contents.dependencies || {}),
-                    ...Object.keys(contents.devDependencies || {}),
-                ]);
+                pkgCount++;
             } else if (
                 ["yarn.lock", "package-lock.json", "pnpm-lock.yaml"].includes(
                     details.base
@@ -112,34 +116,43 @@ module.exports = async function(metadata) {
                     details.base
                 )
             ) {
-                dependencies.push(
-                    details.name === "now" ? "vercel" : details.name
-                );
+                dependencies.push(details.name === "now" ? "vercel" : details.name);
             } else if (details.name === "Dockerfile") {
                 dependencies.push("docker");
             }
             if ([".sass", ".styl", ".scss"].includes(details.ext)) {
-                dependencies.push(details.ext === ".scss" ? "sass" : details.ext.slice(1));
+                dependencies.push(
+                    details.ext === ".scss" ? "sass" : details.ext.slice(1)
+                );
             }
         }
-        svgIdentifier(Array.from(new Set(dependencies)));
-    };
-    const copy = JSON.parse(JSON.stringify(ecosystem));
-    ecosystem = {
-        html: ["html"],
-        css: ["css"],
-        javascript: ["javascript"],
-        "testing-frameworks": [],
-        "seo-addons": [],
-        "package-managers": [],
-        "nodejs": ["nodejs"],
-        platforms: [],
-        bundlers: [],
-        tools: [],
-    };
-    // const favouriteStuff = {};
-    // Object.keys(copy).forEach((key) => {
-    //     const countMap = mostUsedElement(copy[key]);
-    // });
-    return copy;
-}
+        svgIdentifier(Array.from(new Set(dependencies)), ecosystem);
+    }
+    //Figure out favourites from the ecosystem of tools used in repos
+    const favouriteStuff = {};
+    Object.keys(ecosystem).forEach((key) => {
+        const countMap = mostUsedElement(ecosystem[key]);
+        let highest = [];
+        let highestCount = 0;
+        for (const [val, count] of countMap) {
+            if (highestCount < count) {
+                highest = [];
+                highest.push(val);
+                highestCount = count;
+            } else if (highestCount === count) {
+                highest.push(val);
+            }
+        }
+        favouriteStuff[key] = highest;
+    });
+    favouriteStuff.html.unshift("html");
+    favouriteStuff.css.unshift("css", ...favouriteStuff["css-frameworks"]);
+    delete favouriteStuff["css-frameworks"];
+    favouriteStuff.javascript.unshift(
+        "javascript",
+        ...favouriteStuff["front-end-frameworks"]
+    );
+    delete favouriteStuff["front-end-frameworks"];
+    favouriteStuff.nodejs.unshift("nodejs");
+    return favouriteStuff;
+};
