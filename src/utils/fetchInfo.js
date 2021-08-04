@@ -5,11 +5,10 @@ let ecosystem = {
     html: ["html"],
     css: ["css"],
     javascript: ["javascript"],
-    "css-frameworks": [],
     "testing-frameworks": [],
     "seo-addons": [],
     "package-managers": [],
-    frameworks: [],
+    "nodejs": ["nodejs"],
     platforms: [],
     bundlers: [],
     tools: [],
@@ -23,6 +22,7 @@ const mostUsedElement = (arr) => {
             frequencyTable.set(elem, 1);
         }
     }
+    return frequencyTable;
 }
 const flattenDirectory = (dir) => {
     const contents = fs.existsSync(dir) ? fs.readdirSync(dir) : [];
@@ -78,9 +78,7 @@ module.exports = async function(metadata) {
         if (payload_url) {
             const payload_data = await fetch(payload_url).then((res) => res.json());
             if (Array.isArray(payload_data.tree))
-                for (let file of payload_data.tree) {
-                    files.push(file.path);
-                }
+                files.push(...payload_data.tree.map(elem => elem.path));
         }
         const repoUrl = `https://raw.githubusercontent.com/${metadata.name}/${repo}/${default_branch}/`;
         repoFile.set(repoUrl, files);
@@ -131,14 +129,17 @@ module.exports = async function(metadata) {
         html: ["html"],
         css: ["css"],
         javascript: ["javascript"],
-        "css-frameworks": [],
         "testing-frameworks": [],
         "seo-addons": [],
         "package-managers": [],
-        frameworks: [],
+        "nodejs": ["nodejs"],
         platforms: [],
         bundlers: [],
         tools: [],
     };
+    // const favouriteStuff = {};
+    // Object.keys(copy).forEach((key) => {
+    //     const countMap = mostUsedElement(copy[key]);
+    // });
     return copy;
 }
