@@ -43,7 +43,7 @@ const svgIdentifier = (dependencies, ecosystem) => {
 module.exports = async function(metadata) {
     const baseUrl = `https://api.github.com/repos`;
     const repoFile = new Map();
-    let ecosystem = {
+    const ecosystem = {
         html: [],
         css: [],
         javascript: [],
