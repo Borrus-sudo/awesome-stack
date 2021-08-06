@@ -26,7 +26,6 @@ const flattenDirectory = (dir) => {
     }
     return result;
 };
-const contents = flattenDirectory(path.resolve(process.cwd(), "./src/svgs"));
 const svgIdentifier = (dependencies, ecosystem) => {
     for (let content of contents) {
         const { name, dir } = path.parse(content);
@@ -40,6 +39,21 @@ const svgIdentifier = (dependencies, ecosystem) => {
         });
     }
 };
+const contents = flattenDirectory(path.resolve(process.cwd(), "./src/svgs"));
+const svgMapper = new Map([
+    ["yarn.lock", "yarn"],
+    ["package-lock.json", "npm"],
+    ["pnpm-lock.yaml", "pnpm"],
+    ["netlify.toml", "netlify"],
+    ["vercel.json", "vercel"],
+    ["now.json", "vercel"],
+    ["heroku.json", "heroku"],
+    [".sass", "sass"],
+    [".scss", "sass"],
+    [".styl", "stylus"],
+    ["Dockerfile", "docker"],
+]);
+
 module.exports = async function(metadata) {
     const baseUrl = `https://api.github.com/repos`;
     const repoFile = new Map();
@@ -99,60 +113,42 @@ module.exports = async function(metadata) {
                     ]
                 );
                 pkgCount++;
-            } else if (
-                ["yarn.lock", "package-lock.json", "pnpm-lock.yaml"].includes(
-                    details.base
-                )
-            ) {
+            } else {
                 dependencies.push(
-                    details.name === "package-lock" ?
-                    "npm" :
-                    details.name === "pnpm-lock" ?
-                    "pnpm" :
-                    details.name
-                );
-            } else if (
-                ["netlify.toml", "vercel.json", "heroku.json", "now.json"].includes(
-                    details.base
-                )
-            ) {
-                dependencies.push(details.name === "now" ? "vercel" : details.name);
-            } else if (details.name === "Dockerfile") {
-                dependencies.push("docker");
-            }
-            if ([".sass", ".styl", ".scss"].includes(details.ext)) {
-                dependencies.push(
-                    details.ext === ".scss" ? "sass" : details.ext.slice(1)
+                    svgMapper.get(details.base) ||
+                    svgMapper.get(details.name) ||
+                    svgMapper.get(details.ext) ||
+                    ""
                 );
             }
+            svgIdentifier([...new Set(dependencies)], ecosystem);
         }
-        svgIdentifier(Array.from(new Set(dependencies)), ecosystem);
+        //Figure out favourites from the ecosystem of tools used in repos
+        const card = {};
+        Object.keys(ecosystem).forEach((key) => {
+            const countMap = mostUsedElement(ecosystem[key]);
+            let highest = [];
+            let highestCount = 0;
+            for (const [val, count] of countMap) {
+                if (highestCount < count) {
+                    highest = [];
+                    highest.push(val);
+                    highestCount = count;
+                } else if (highestCount === count) {
+                    highest.push(val);
+                }
+            }
+            card[key] = highest;
+        });
+        card.html.unshift("html");
+        card.css.unshift("css", ...card["css-frameworks"]);
+        delete card["css-frameworks"];
+        card.javascript.unshift("javascript", ...card["front-end-frameworks"]);
+        delete card["front-end-frameworks"];
+        card.nodejs.unshift("nodejs");
+        return {
+            card,
+            contents,
+        };
     }
-    //Figure out favourites from the ecosystem of tools used in repos
-    const favouriteStuff = {};
-    Object.keys(ecosystem).forEach((key) => {
-        const countMap = mostUsedElement(ecosystem[key]);
-        let highest = [];
-        let highestCount = 0;
-        for (const [val, count] of countMap) {
-            if (highestCount < count) {
-                highest = [];
-                highest.push(val);
-                highestCount = count;
-            } else if (highestCount === count) {
-                highest.push(val);
-            }
-        }
-        favouriteStuff[key] = highest;
-    });
-    favouriteStuff.html.unshift("html");
-    favouriteStuff.css.unshift("css", ...favouriteStuff["css-frameworks"]);
-    delete favouriteStuff["css-frameworks"];
-    favouriteStuff.javascript.unshift(
-        "javascript",
-        ...favouriteStuff["front-end-frameworks"]
-    );
-    delete favouriteStuff["front-end-frameworks"];
-    favouriteStuff.nodejs.unshift("nodejs");
-    return favouriteStuff;
 };

@@ -2,21 +2,7 @@ const themes = require("./themes");
 const path = require("path");
 const fs = require("fs");
 let svg = "";
-const flattenDirectory = (dir) => {
-    const contents = fs.existsSync(dir) ? fs.readdirSync(dir) : [];
-    const result = [];
-    for (let content of contents) {
-        const contentPath = path.join(dir, content);
-        if (fs.statSync(contentPath).isFile()) {
-            result.push(contentPath);
-        } else {
-            result.push(...flattenDirectory(contentPath));
-        }
-    }
-    return result;
-};
-const contents = flattenDirectory(path.resolve(process.cwd(), "./src/svgs"));
-module.exports = function(card, theme) {
+module.exports = function({ card, contents }, theme) {
     Object.keys(card).forEach((key) => {
         for (let item of card[key]) {
             //item is svg name
