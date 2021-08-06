@@ -6,8 +6,9 @@ router.get("/", async(req, res) => {
     const query = req.query;
     const payload = await fetchInfo(query);
     const theme = query.theme || "default";
-    createCard(payload, theme);
-    res.json(resData);
+    const svgFile = createCard(payload, theme);
+    // res.setHeader("Content-Type", "image/svg");
+    res.send(svgFile);
 });
 
 module.exports = router;

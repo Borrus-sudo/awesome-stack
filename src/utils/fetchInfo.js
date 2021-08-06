@@ -26,8 +26,8 @@ const flattenDirectory = (dir) => {
     }
     return result;
 };
+const contents = flattenDirectory(path.resolve(process.cwd(), "./src/svgs"));
 const svgIdentifier = (dependencies, ecosystem) => {
-    const contents = flattenDirectory(path.resolve(process.cwd(), "./src/svgs"));
     for (let content of contents) {
         const { name, dir } = path.parse(content);
         dependencies.forEach((dependency) => {

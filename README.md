@@ -4,7 +4,7 @@ Endpoints:
 - /api/v1/card?name=your-github-username&repos=comma,separated,repos
 
 ## Important note
-CJ is not a contributor. Due too a weird shit mistake or bug (idk) his name is appearing in contributor list cause I used his create-express-api boiler plate and messed up in some step.
+CJ is not a contributor. Due to a weird shit mistake or bug (IDK) his name is appearing in the contributor list cause I used his create-express-API boiler plate and messed up in some steps.
 ## Setup
 
 ```
