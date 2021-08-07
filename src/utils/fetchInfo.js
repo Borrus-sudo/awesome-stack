@@ -52,6 +52,8 @@ const svgMapper = new Map([
     [".sass", "sass"],
     [".scss", "sass"],
     [".styl", "stylus"],
+    [".stylus", "stylus"],
+    [".less", "less"],
     ["Dockerfile", "docker"],
 ]);
 
@@ -67,6 +69,8 @@ module.exports = async function(metadata) {
         "css-frameworks": [],
         "seo-addons": [],
         "package-managers": [],
+        "javascript-tools": [],
+        "css-tools": [],
         nodejs: [],
         platforms: [],
         bundlers: [],
@@ -148,6 +152,10 @@ module.exports = async function(metadata) {
     card.javascript.unshift("javascript", ...card["front-end-frameworks"]);
     delete card["front-end-frameworks"];
     card.nodejs.unshift("nodejs");
+    card.tools.push(...card["javascript-tools"]);
+    delete card["javascript-tools"];
+    card.tools.push(...card["css-tools"]);
+    delete card["css-tools"];
     return {
         card,
         contents,
