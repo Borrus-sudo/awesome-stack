@@ -39,6 +39,7 @@ const svgIdentifier = (dependencies, ecosystem) => {
         });
     }
 };
+//Constants gonna remain same hence global variables
 const contents = flattenDirectory(path.resolve(process.cwd(), "./src/svgs"));
 const svgMapper = new Map([
     ["yarn.lock", "yarn"],
@@ -121,34 +122,34 @@ module.exports = async function(metadata) {
                     ""
                 );
             }
-            svgIdentifier([...new Set(dependencies)], ecosystem);
         }
-        //Figure out favourites from the ecosystem of tools used in repos
-        const card = {};
-        Object.keys(ecosystem).forEach((key) => {
-            const countMap = mostUsedElement(ecosystem[key]);
-            let highest = [];
-            let highestCount = 0;
-            for (const [val, count] of countMap) {
-                if (highestCount < count) {
-                    highest = [];
-                    highest.push(val);
-                    highestCount = count;
-                } else if (highestCount === count) {
-                    highest.push(val);
-                }
-            }
-            card[key] = highest;
-        });
-        card.html.unshift("html");
-        card.css.unshift("css", ...card["css-frameworks"]);
-        delete card["css-frameworks"];
-        card.javascript.unshift("javascript", ...card["front-end-frameworks"]);
-        delete card["front-end-frameworks"];
-        card.nodejs.unshift("nodejs");
-        return {
-            card,
-            contents,
-        };
+        svgIdentifier([...new Set(dependencies)], ecosystem);
     }
+    //Figure out favourites from the ecosystem of tools used in repos
+    const card = {};
+    Object.keys(ecosystem).forEach((key) => {
+        const countMap = mostUsedElement(ecosystem[key]);
+        let highest = [];
+        let highestCount = 0;
+        for (const [val, count] of countMap) {
+            if (highestCount < count) {
+                highest = [];
+                highest.push(val);
+                highestCount = count;
+            } else if (highestCount === count) {
+                highest.push(val);
+            }
+        }
+        card[key] = highest;
+    });
+    card.html.unshift("html");
+    card.css.unshift("css", ...card["css-frameworks"]);
+    delete card["css-frameworks"];
+    card.javascript.unshift("javascript", ...card["front-end-frameworks"]);
+    delete card["front-end-frameworks"];
+    card.nodejs.unshift("nodejs");
+    return {
+        card,
+        contents,
+    };
 };

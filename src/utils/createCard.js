@@ -1,8 +1,10 @@
 const themes = require("./themes");
 const path = require("path");
 const fs = require("fs");
-let svg = "";
+
 module.exports = function({ card, contents }, theme) {
+    let svg = "";
+    console.log(card);
     Object.keys(card).forEach((key) => {
         for (let item of card[key]) {
             //item is svg name
@@ -12,5 +14,25 @@ module.exports = function({ card, contents }, theme) {
         }
     });
     console.log("Create card func invoked");
-    return svg;
+    return `
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+       <meta charset="UTF-8">
+       <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>Document</title>
+    </head>
+    <style>
+      svg{
+          transform:translate(20px,20px) !important;
+      }
+    </style>
+    <body>
+        ${svg}
+    </body>
+
+    </html>
+    `;
 };
