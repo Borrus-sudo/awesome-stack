@@ -30,7 +30,11 @@ const svgIdentifier = (dependencies, ecosystem) => {
     for (let content of contents) {
         const { name, dir } = path.parse(content);
         dependencies.forEach((dependency) => {
-            if (dependency === name || dependency === `@${name}/core`) {
+            if (
+                dependency === name ||
+                dependency === `@${name}/core` ||
+                dependency.includes(name)
+            ) {
                 const { name: folderName } = path.parse(dir);
                 if (ecosystem[folderName]) {
                     ecosystem[folderName].push(name);
@@ -132,10 +136,11 @@ module.exports = async function(metadata) {
     //Figure out favourites from the ecosystem of tools used in repos
     const card = {};
     Object.keys(ecosystem).forEach((key) => {
-        const countMap = mostUsedElement(ecosystem[key]);
+        const countMap = mostUsedElement(new Set(ecosystem[key]));
         let highest = [];
         let highestCount = 0;
         for (const [val, count] of countMap) {
+            console.log({ val, count });
             if (highestCount < count) {
                 highest = [];
                 highest.push(val);

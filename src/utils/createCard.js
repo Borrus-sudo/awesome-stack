@@ -6,7 +6,9 @@ module.exports = function({ card, contents }, theme) {
     let svg = "";
     console.log(card);
     Object.keys(card).forEach((key) => {
-        for (let item of card[key]) {
+        //css and html can get repeated cause css-frameworks contains css
+        const unique = [...new Set(card[key])];
+        for (let item of unique) {
             //item is svg name
             const elem = contents.find((elem) => path.parse(elem).name === item);
             const svgContent = fs.readFileSync(elem, { encoding: "utf-8" });
