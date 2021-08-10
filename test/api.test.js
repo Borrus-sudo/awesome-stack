@@ -1,25 +1,58 @@
-const request = require('supertest');
+const request = require("supertest");
 
-const app = require('../src/app');
+const app = require("../src/app");
 
-describe('GET /api/v1', () => {
-  it('responds with a json message', (done) => {
-    request(app)
-      .get('/api/v1')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(200, {
-        message: 'API - 👋🌎🌍🌏'
-      }, done);
-  });
+describe("GET /api/v1", () => {
+    it("responds with a json message", (done) => {
+        request(app)
+            .get("/api/v1")
+            .set("Accept", "application/json")
+            .expect("Content-Type", /json/)
+            .expect(
+                200, {
+                    message: "API - 👋🌎🌍🌏",
+                },
+                done
+            );
+    });
 });
 
-describe('GET /api/v1/emojis', () => {
-  it('responds with a json message', (done) => {
-    request(app)
-      .get('/api/v1/emojis')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(200, ['😀', '😳', '🙄'], done);
-  });
+describe("GET /api/v1/cards/json", () => {
+    it("responds with a json message", (done) => {
+        request(app)
+            .get("/api/v1/cards/json?name=Borrus-sudo&repos=jsgandalf")
+            .set("Accept", "application/json")
+            .expect("Content-Type", /json/)
+            .expect(200, {
+                html: ["html"],
+                css: ["css", "tailwindcss", "css"],
+                javascript: ["javascript", "vue", "typescript"],
+                "testing-frameworks": [],
+                "seo-addons": [],
+                "package-managers": ["npm"],
+                nodejs: ["nodejs"],
+                platforms: [],
+                bundlers: [],
+                tools: ["eslint", "prettier", "babel", "postcss"],
+            });
+        request(app)
+            .get("/api/v1/cards/json?name=Borrus-sudo&repos=vue-generator-graph")
+            .set("Accept", "application/json")
+            .expect("Content-Type", /json/)
+            .expect(
+                200, {
+                    html: ["html", "html"],
+                    css: ["css"],
+                    javascript: ["javascript", "typescript"],
+                    "testing-frameworks": ["mocha"],
+                    "seo-addons": [],
+                    "package-managers": ["yarn"],
+                    nodejs: ["nodejs"],
+                    platforms: [],
+                    bundlers: ["webpack"],
+                    tools: ["eslint"],
+                },
+                done
+            );
+    });
 });

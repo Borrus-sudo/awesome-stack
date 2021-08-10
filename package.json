@@ -8,7 +8,7 @@
         "start": "node src/index.js",
         "dev": "nodemon src/index.js",
         "lint": "eslint --fix src",
-        "test": "mocha --exit"
+        "test": "nyc --reporter=text mocha --exit"
     },
     "keywords": [],
     "author": "Borrus-sudo",
@@ -27,6 +27,7 @@
         "eslint-plugin-import": "^2.24.0",
         "mocha": "^9.0.0",
         "nodemon": "^2.0.7",
+        "nyc": "^15.1.0",
         "supertest": "^6.1.3"
     }
 }

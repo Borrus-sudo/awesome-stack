@@ -11,4 +11,12 @@ router.get("/", async(req, res) => {
     res.send(svgFile);
 });
 
+//For testing purposes
+router.get("/json", async(req, res) => {
+    const query = req.query;
+    const { card } = await fetchInfo(query);
+    res.status(200);
+    res.json(card);
+});
+
 module.exports = router;
