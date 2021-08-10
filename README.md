@@ -1,4 +1,4 @@
-# awesome-stack
+# AboutStack
 Github Readme Stats for your favourite web dev stack. 
 
 # Why?
