@@ -22,25 +22,25 @@ CJ is not a contributor. Due to a weird shit mistake or bug (IDK) his name is ap
 ## Setup
 
 ```
-npm install
+yarn install
 ```
 
 ## Lint
 
 ```
-npm run lint
+yarn lint
 ```
 
 ## Test
 
 ```
-npm run test
+yarn test
 ```
 
 ## Development
 
 ```
-npm run dev
+yarn dev
 ```
 
 # Support me
