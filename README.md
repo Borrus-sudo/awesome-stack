@@ -3,6 +3,8 @@ Github Readme Stats for your favourite web dev stack.
 <br/>
 
 ![TestWorkflow](https://github.com/Borrus-sudo/awesome-stack/actions/workflows/test.yml/badge.svg)
+![GitHub issues](https://img.shields.io/github/issues/Borrus-sudo/awesome-stack)
+![GitHub stars](https://img.shields.io/github/stars/Borrus-sudo/awesome-stack)
 <br/>
 
 # Why?
