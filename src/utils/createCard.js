@@ -26,11 +26,6 @@ module.exports = function({ card, contents }, theme) {
        <meta name="viewport" content="width=device-width, initial-scale=1.0">
        <title>Document</title>
     </head>
-    <style>
-      svg{
-          transform:translate(20px,20px) !important;
-      }
-    </style>
     <body>
         ${svg}
     </body>
