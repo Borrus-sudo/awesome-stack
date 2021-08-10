@@ -1,8 +1,8 @@
 # ⚡ awesome-stack
 Github Readme Stats for your favourite web dev stack.
-
 <br/>
-![Test workflow](https://github.com/Borrus-sudo/awesome-stack/actions/workflows/test.yml/badge.svg)
+
+![TestWorkflow](https://github.com/Borrus-sudo/awesome-stack/actions/workflows/test.yml/badge.svg)
 <br/>
 
 # Why?
