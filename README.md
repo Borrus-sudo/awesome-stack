@@ -49,6 +49,5 @@ Starring this repo shall encourage me to do more open sourcing. So consider star
 
 # TO-DO
 
-- Create a card from the svgs
-- Look for better caching/storing options for the SVG as analyzing the repo is a bit time consuming.
+- Create a card from the SVG
 - Acquiring a GitHub API key
