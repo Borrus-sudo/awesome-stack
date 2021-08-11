@@ -54,7 +54,7 @@ const svgMapper = new Map([
     ["netlify.toml", "netlify"],
     ["vercel.json", "vercel"],
     ["now.json", "vercel"],
-    ["heroku.json", "heroku"],
+    ["Procfile", "heroku"],
     [".sass", "sass"],
     [".scss", "sass"],
     [".styl", "stylus"],
