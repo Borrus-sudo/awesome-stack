@@ -5,10 +5,10 @@ const createCard = require("../utils/createCard");
 router.get("/", async(req, res) => {
     const query = req.query;
     const ctx = await fetchInfo(query);
-    if ((ctx.message || "").startsWith("404")) {
+    if (ctx.message) {
         res.status(404).send(ctx);
         return;
-    };
+    }
     const theme = query.theme || "default";
     const svgFile = createCard(ctx, theme);
     res.status(200);
@@ -19,7 +19,7 @@ router.get("/", async(req, res) => {
 router.get("/json", async(req, res) => {
     const query = req.query;
     const ctx = await fetchInfo(query);
-    if ((ctx.message || "").startsWith("404")) {
+    if (ctx.message) {
         res.status(404).send(ctx);
         return;
     }
