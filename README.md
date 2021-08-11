@@ -13,7 +13,7 @@ Existing github readme stats do not showcase the specific favourite technologies
 
 Endpoints:
 
-- /api/v1/card?name=your-github-username&repos=comma,separated,repos
+- /api/v1/cards?name=your-github-username&repos=comma,separated,repos
 
 ## Important note
 
