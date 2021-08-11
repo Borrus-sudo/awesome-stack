@@ -13,6 +13,22 @@ const frequencyTableGenerator = (arr) => {
     return frequencyTable;
 };
 const svgIdentifier = (dependencies, ecosystem, contents) => {
+    const localEcosystem = {
+        html: [],
+        css: [],
+        javascript: [],
+        "testing-frameworks": [],
+        "front-end-frameworks": [],
+        "css-frameworks": [],
+        "seo-addons": [],
+        "package-managers": [],
+        "javascript-tools": [],
+        "css-tools": [],
+        nodejs: [],
+        platforms: [],
+        bundlers: [],
+        tools: [],
+    };
     for (let content of contents) {
         const { name, dir } = path.parse(content);
         dependencies.forEach((dependency) => {
@@ -23,15 +39,23 @@ const svgIdentifier = (dependencies, ecosystem, contents) => {
                     !dependency.includes(
                         name !== "babel" ? "babel" : "somecrappadsdsds"
                     ) &&
-                    !dependency.includes(name !== "eslint" ? "eslint" : "somecrappadsdsds"))
+                    !dependency.includes(
+                        name !== "eslint" ? "eslint" : "somecrappadsdsds"
+                    ))
             ) {
                 const { name: folderName } = path.parse(dir);
-                if (ecosystem[folderName]) {
-                    ecosystem[folderName].push(name);
+                if (
+                    localEcosystem[folderName] &&
+                    !localEcosystem[folderName].includes(name)
+                ) {
+                    localEcosystem[folderName].push(name);
                 }
             }
         });
     }
+    Object.keys(localEcosystem).forEach((genre) =>
+        ecosystem[genre].push(...localEcosystem[genre])
+    );
 };
 const useCache = () => {
     const cacheMap = new Map();

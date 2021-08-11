@@ -4,7 +4,6 @@ const express = require("express");
 const router = express.Router();
 const fetchInfo = require("../utils/fetchInfo");
 const createCard = require("../utils/createCard");
-
 const flattenDirectory = (dir) => {
     const contents = fs.existsSync(dir) ? fs.readdirSync(dir) : [];
     const result = [];
