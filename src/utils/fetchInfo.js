@@ -57,29 +57,6 @@ const svgIdentifier = (dependencies, ecosystem, contents) => {
         ecosystem[genre].push(...localEcosystem[genre])
     );
 };
-const useCache = () => {
-    const cacheMap = new Map();
-    const countMap = new Map();
-    return [
-        (key) => {
-            const val = cacheMap.get(key);
-            if (val) {
-                if (countMap.get(key) <= 5) {
-                    countMap.set(key, countMap.get(key) + 1);
-                    return val;
-                } else {
-                    return "fetch";
-                }
-            } else {
-                return "fetch";
-            }
-        },
-        (key, val) => {
-            cacheMap.set(key, val);
-            countMap.set(key, 0);
-        },
-    ];
-};
 //Constants gonna remain same hence global variables
 const svgMapper = new Map([
     ["yarn.lock", "yarn"],
@@ -96,7 +73,6 @@ const svgMapper = new Map([
     [".less", "less"],
     ["Dockerfile", "docker"],
 ]);
-const [cache, setCache] = useCache();
 module.exports = async function(metadata, contents) {
     const baseUrl = `https://api.github.com/repos`;
     const repoFile = new Map();
@@ -120,12 +96,6 @@ module.exports = async function(metadata, contents) {
         return {
             message: "404 name and repos parameter is mandatory",
         };
-    }
-    const key = metadata.name + metadata.repos;
-    const val = cache(key);
-    if (val !== "fetch") {
-        console.log("Returned from cache");
-        return val;
     }
     for (const repo of metadata.repos.split(",").slice(0, 5)) {
         const data = await fetch(baseUrl + `/${metadata.name}/${repo}`).then(
@@ -203,6 +173,5 @@ module.exports = async function(metadata, contents) {
     delete card["javascript-tools"];
     card.tools.push(...card["css-tools"]);
     delete card["css-tools"];
-    setCache(key, card);
     return card;
 };
