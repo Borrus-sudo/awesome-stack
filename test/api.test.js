@@ -58,6 +58,27 @@ describe("GET /api/v1/cards/json", () => {
                 tools: ["eslint"],
             }, done);
     });
+    it("should not have react as one of frameworks", (done) => {
+        request(app)
+            .get("/api/v1/cards/json?name=Informathemusic&repos=informa-db.js")
+            .set("Accept", "application/json")
+            .expect("Content-Type", /json/)
+            .expect(
+                200, {
+                    html: ["html"],
+                    css: ["css"],
+                    javascript: ["javascript"],
+                    "testing-frameworks": [],
+                    "seo-addons": [],
+                    "package-managers": ["npm"],
+                    nodejs: ["nodejs"],
+                    platforms: [],
+                    bundlers: [],
+                    tools: ["eslint"],
+                },
+                done
+            );
+    });
     it("responds with not found message", (done) => {
         const username = "JSY";
         const repo = "CrapDaWorld";
