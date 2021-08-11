@@ -2,7 +2,7 @@ const themes = require("./themes");
 const path = require("path");
 const fs = require("fs");
 
-module.exports = function({ card, contents }, theme) {
+module.exports = function({ ctx: card, contents }, theme) {
     let svg = "";
     console.log(card);
     Object.keys(card).forEach((key) => {

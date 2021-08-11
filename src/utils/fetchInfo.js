@@ -1,6 +1,5 @@
 const fetch = require("node-fetch");
 const path = require("path");
-const fs = require("fs");
 
 const frequencyTableGenerator = (arr) => {
     const frequencyTable = new Map();
@@ -13,20 +12,7 @@ const frequencyTableGenerator = (arr) => {
     }
     return frequencyTable;
 };
-const flattenDirectory = (dir) => {
-    const contents = fs.existsSync(dir) ? fs.readdirSync(dir) : [];
-    const result = [];
-    for (let content of contents) {
-        const contentPath = path.join(dir, content);
-        if (fs.statSync(contentPath).isFile()) {
-            result.push(contentPath);
-        } else {
-            result.push(...flattenDirectory(contentPath));
-        }
-    }
-    return result;
-};
-const svgIdentifier = (dependencies, ecosystem) => {
+const svgIdentifier = (dependencies, ecosystem, contents) => {
     for (let content of contents) {
         const { name, dir } = path.parse(content);
         dependencies.forEach((dependency) => {
@@ -34,8 +20,10 @@ const svgIdentifier = (dependencies, ecosystem) => {
                 dependency === name ||
                 dependency === `@${name}/core` ||
                 (dependency.includes(name) &&
-                    !dependency.includes(name !== "babel" ? "babel" : "somecrappadsdsds") &&
-                    !dependency.includes(name !== "babel" ? "babel" : "somecrappadsdsds"))
+                    !dependency.includes(
+                        name !== "babel" ? "babel" : "somecrappadsdsds"
+                    ) &&
+                    !dependency.includes(name !== "eslint" ? "eslint" : "somecrappadsdsds"))
             ) {
                 const { name: folderName } = path.parse(dir);
                 if (ecosystem[folderName]) {
@@ -45,8 +33,30 @@ const svgIdentifier = (dependencies, ecosystem) => {
         });
     }
 };
+const useCache = () => {
+    const cacheMap = new Map();
+    const countMap = new Map();
+    return [
+        (key) => {
+            const val = cacheMap.get(key);
+            if (val) {
+                if (countMap.get(key) <= 5) {
+                    countMap.set(key, countMap.get(key) + 1);
+                    return val;
+                } else {
+                    return "fetch";
+                }
+            } else {
+                return "fetch";
+            }
+        },
+        (key, val) => {
+            cacheMap.set(key, val);
+            countMap.set(key, 0);
+        },
+    ];
+};
 //Constants gonna remain same hence global variables
-const contents = flattenDirectory(path.resolve(process.cwd(), "./src/svgs"));
 const svgMapper = new Map([
     ["yarn.lock", "yarn"],
     ["package-lock.json", "npm"],
@@ -62,8 +72,8 @@ const svgMapper = new Map([
     [".less", "less"],
     ["Dockerfile", "docker"],
 ]);
-
-module.exports = async function(metadata) {
+const [cache, setCache] = useCache();
+module.exports = async function(metadata, contents) {
     const baseUrl = `https://api.github.com/repos`;
     const repoFile = new Map();
     const ecosystem = {
@@ -86,6 +96,12 @@ module.exports = async function(metadata) {
         return {
             message: "404 name and repos parameter is mandatory",
         };
+    }
+    const key = metadata.name + metadata.repos;
+    const val = cache(key);
+    if (val !== "fetch") {
+        console.log("Returned from cache");
+        return val;
     }
     for (const repo of metadata.repos.split(",").slice(0, 5)) {
         const data = await fetch(baseUrl + `/${metadata.name}/${repo}`).then(
@@ -133,7 +149,7 @@ module.exports = async function(metadata) {
                 );
             }
         }
-        svgIdentifier([...new Set(dependencies)], ecosystem);
+        svgIdentifier([...new Set(dependencies)], ecosystem, contents);
     }
     //Figure out favourites from the ecosystem of tools used in repos
     const card = {};
@@ -163,8 +179,6 @@ module.exports = async function(metadata) {
     delete card["javascript-tools"];
     card.tools.push(...card["css-tools"]);
     delete card["css-tools"];
-    return {
-        card,
-        contents,
-    };
+    setCache(key, card);
+    return card;
 };
