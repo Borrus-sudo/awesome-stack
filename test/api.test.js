@@ -23,18 +23,21 @@ describe("GET /api/v1/cards/json", () => {
             .get("/api/v1/cards/json?name=Borrus-sudo&repos=jsgandalf")
             .set("Accept", "application/json")
             .expect("Content-Type", /json/)
-            .expect(200, {
-                html: ["html"],
-                css: ["css", "tailwindcss", "css"],
-                javascript: ["javascript", "vue", "typescript"],
-                "testing-frameworks": [],
-                "seo-addons": [],
-                "package-managers": ["npm"],
-                nodejs: ["nodejs"],
-                platforms: [],
-                bundlers: [],
-                tools: ["eslint", "prettier", "babel", "postcss"],
-            });
+            .expect(
+                200, {
+                    html: ["html"],
+                    css: ["css", "tailwindcss", "css"],
+                    javascript: ["javascript", "vue", "typescript"],
+                    "testing-frameworks": [],
+                    "seo-addons": [],
+                    "package-managers": ["npm"],
+                    nodejs: ["nodejs"],
+                    platforms: [],
+                    bundlers: [],
+                    tools: ["eslint", "prettier", "babel", "postcss"],
+                },
+                done
+            );
         request(app)
             .get("/api/v1/cards/json?name=Borrus-sudo&repos=vue-generator-graph")
             .set("Accept", "application/json")
@@ -51,6 +54,19 @@ describe("GET /api/v1/cards/json", () => {
                     platforms: [],
                     bundlers: ["webpack"],
                     tools: ["eslint"],
+                },
+            );
+    });
+    it("responds with not found message", (done) => {
+        const username = "JSY";
+        const repo = "CrapDaWorld";
+        request(app)
+            .get(`/api/v1/cards/json?name=${username}&repos=${repo}`)
+            .set("Accept", "application/json")
+            .expect("Content-Type", /json/)
+            .expect(
+                404, {
+                    message: `404: The repo '${repo}' or username '${username}' does not seem to exist`,
                 },
                 done
             );

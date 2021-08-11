@@ -2,7 +2,7 @@ const fetch = require("node-fetch");
 const path = require("path");
 const fs = require("fs");
 
-const mostUsedElement = (arr) => {
+const frequencyTableGenerator = (arr) => {
     const frequencyTable = new Map();
     for (let elem of arr) {
         if (frequencyTable.get(elem)) {
@@ -92,7 +92,7 @@ module.exports = async function(metadata) {
         const files = [];
         if (data.message === "Not Found") {
             return {
-                message: `The repo '${repo}' or username '${metadata.name}' does not seem to exist`,
+                message: `404: The repo '${repo}' or username '${metadata.name}' does not seem to exist`,
             };
         }
         const { git_commits_url, default_branch } = data;
@@ -136,7 +136,7 @@ module.exports = async function(metadata) {
     //Figure out favourites from the ecosystem of tools used in repos
     const card = {};
     Object.keys(ecosystem).forEach((key) => {
-        const countMap = mostUsedElement(new Set(ecosystem[key]));
+        const countMap = frequencyTableGenerator(new Set(ecosystem[key]));
         let highest = [];
         let highestCount = 0;
         for (const [val, count] of countMap) {
