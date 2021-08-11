@@ -32,6 +32,7 @@ router.get("/", async(req, res) => {
         },
         theme
     );
+    res.setHeader("Content-type", "image/svg+xml");
     res.status(200);
     res.send(svgFile);
 });
