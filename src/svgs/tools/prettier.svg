@@ -1,11 +1,11 @@
-<svg      width="57"         height="57"     version="1.1" viewBox="0 0 210 210" xmlns="http://www.w3.org/2000/svg">
+<svg width="57" height="57" version="1.1" viewBox="0 0 210 210" xmlns="http://www.w3.org/2000/svg">
 <title>prettier-icon-dark</title>
 <desc>Created with Sketch.</desc>
 <g fill="none" fill-rule="evenodd">
 <g id="prettier-icon-dark">
 <g id="Icon-(Dark)">
 <g id="Group" transform="translate(10.5 10.5) scale(.9)">
-<rect id="Rectangle" x="165" y="40"  width="24"   height="24"  rx="5" fill="#56B3B4"/>
+<rect id="Rectangle" x="165" y="40" width="24" height="24" rx="5" fill="#56B3B4"/>
 <rect x="15" y="200" width="60" height="10" rx="5" fill="#EA5E5E"/>
 <rect x="135" y="120" width="40" height="10" rx="5" fill="#BF85BF"/>
 <rect x="75" y="120" width="50" height="10" rx="5" fill="#EA5E5E"/>
