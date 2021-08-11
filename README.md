@@ -11,9 +11,9 @@ Github Readme Stats for your favourite web dev stack.
 
 Existing github readme stats do not showcase the specific favourite technologies/tools. So here comes my app. It analyzes your repos and figures the the most used tooling and framework and creates a card. Currently only javascript tooling and ecosystem is supported. More coming in the future.
 
-Endpoints:
+Endpoint:
 
-- /api/v1/cards?name=your-github-username&repos=comma,separated,repos
+` /api/v1/cards?name=your-github-username&repos=comma,separated,repos`
 
 ## Important note
 
