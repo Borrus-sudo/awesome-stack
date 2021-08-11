@@ -32,7 +32,8 @@ router.get("/", async(req, res) => {
         },
         theme
     );
-    res.setHeader("Content-type", "image/svg+xml");
+    res.setHeader("Content-Type", "image/svg+xml");
+    res.setHeader("Cache-Control", `public, max-age=1296000`);
     res.status(200);
     res.send(svgFile);
 });
