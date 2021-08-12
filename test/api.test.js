@@ -33,7 +33,7 @@ describe("GET /api/v1/cards/json", () => {
                     "package-managers": ["npm"],
                     nodejs: ["nodejs"],
                     platforms: [],
-                    bundlers: [],
+                    bundlers: ["webpack"],
                     tools: ["eslint", "prettier", "babel", "postcss"],
                 },
                 done
