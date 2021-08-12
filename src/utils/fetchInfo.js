@@ -58,7 +58,9 @@ const svgIdentifier = (dependencies, ecosystem, contents) => {
         localEcosystem["bundlers"].length === 0 &&
         (localEcosystem["seo-addons"].includes("nuxt") ||
             localEcosystem["seo-addons"].includes("next") ||
-            localEcosystem["front-end-frameworks"].includes("vue"))
+            localEcosystem["front-end-frameworks"].includes("vue") ||
+            localEcosystem["front-end-frameworks"].includes("react")) &&
+        !localEcosystem["bundlers"].includes("webpack")
     ) {
         localEcosystem["bundlers"].push("webpack");
     }
@@ -66,7 +68,7 @@ const svgIdentifier = (dependencies, ecosystem, contents) => {
         ecosystem[genre].push(...localEcosystem[genre])
     );
 };
-//Constants gonna remain same hence global variables
+// Constants gonna remain same hence global variables
 const svgMapper = new Map([
     ["yarn.lock", "yarn"],
     ["package-lock.json", "npm"],
@@ -154,14 +156,13 @@ module.exports = async function(metadata, contents) {
         }
         svgIdentifier([...new Set(dependencies)], ecosystem, contents);
     }
-    //Figure out favourites from the ecosystem of tools used in repos
+    // Figure out favourites from the ecosystem of tools used in repos
     const card = {};
     Object.keys(ecosystem).forEach((key) => {
         const countMap = frequencyTableGenerator(new Set(ecosystem[key]));
         let highest = [];
         let highestCount = 0;
         for (const [val, count] of countMap) {
-            console.log({ val, count });
             if (highestCount < count) {
                 highest = [];
                 highest.push(val);
@@ -180,7 +181,6 @@ module.exports = async function(metadata, contents) {
     card.nodejs.unshift("nodejs");
     card.tools.push(...card["javascript-tools"]);
     delete card["javascript-tools"];
-    card.tools.push(...card["css-tools"]);
     delete card["css-tools"];
     return card;
 };
