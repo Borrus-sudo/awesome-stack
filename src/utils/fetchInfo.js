@@ -55,12 +55,11 @@ const svgIdentifier = (dependencies, ecosystem, contents) => {
     }
     //Doing hacky stuff
     if (
-        localEcosystem["bundlers"].length === 0 &&
+        localEcosystem["bundlers"].includes("webpack") &&
         (localEcosystem["seo-addons"].includes("nuxt") ||
             localEcosystem["seo-addons"].includes("next") ||
             localEcosystem["front-end-frameworks"].includes("vue") ||
-            localEcosystem["front-end-frameworks"].includes("react")) &&
-        !localEcosystem["bundlers"].includes("webpack")
+            localEcosystem["front-end-frameworks"].includes("react"))
     ) {
         localEcosystem["bundlers"].push("webpack");
     }
@@ -173,6 +172,7 @@ module.exports = async function(metadata, contents) {
         }
         card[key] = highest;
     });
+    console.log(card);
     card.html.unshift("html");
     card.css.unshift("css", ...card["css-frameworks"]);
     delete card["css-frameworks"];
@@ -181,6 +181,7 @@ module.exports = async function(metadata, contents) {
     card.nodejs.unshift("nodejs");
     card.tools.push(...card["javascript-tools"]);
     delete card["javascript-tools"];
+    card.tools.push(...card["css-tools"]);
     delete card["css-tools"];
     return card;
 };
