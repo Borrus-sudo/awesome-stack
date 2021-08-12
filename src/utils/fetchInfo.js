@@ -53,6 +53,15 @@ const svgIdentifier = (dependencies, ecosystem, contents) => {
             }
         });
     }
+    //Doing hacky stuff
+    if (
+        localEcosystem["bundlers"].length === 0 &&
+        (localEcosystem["seo-addons"].includes("nuxt") ||
+            localEcosystem["seo-addons"].includes("next") ||
+            localEcosystem["front-end-frameworks"].includes("vue"))
+    ) {
+        localEcosystem["bundlers"].push("webpack");
+    }
     Object.keys(localEcosystem).forEach((genre) =>
         ecosystem[genre].push(...localEcosystem[genre])
     );
