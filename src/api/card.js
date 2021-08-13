@@ -22,7 +22,8 @@ router.get("/", async(req, res) => {
     const query = req.query;
     const ctx = await fetchInfo(query, contents);
     if (ctx.message) {
-        res.status(404).send(ctx);
+        const statusCode = ctx.message.includes("404") ? 404 : 201;
+        res.status(statusCode).send(ctx);
         return;
     }
     const theme = query.theme || "default";
@@ -34,8 +35,7 @@ router.get("/", async(req, res) => {
     );
     res.setHeader("Content-Type", "image/svg+xml");
     res.setHeader("Cache-Control", `public, max-age=1296000`);
-    res.status(200);
-    res.send(svgFile);
+    res.status(200).send(svgFile);
 });
 
 //For testing purposes
@@ -43,7 +43,8 @@ router.get("/json", async(req, res) => {
     const query = req.query;
     const ctx = await fetchInfo(query, contents);
     if (ctx.message) {
-        res.status(404).send(ctx);
+        const statusCode = ctx.message.includes("404") ? 404 : 201;
+        res.status(statusCode).send(statusCode);
         return;
     }
     res.status(200);

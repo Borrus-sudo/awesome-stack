@@ -54,7 +54,8 @@ const svgIdentifier = (dependencies, ecosystem, contents) => {
         });
     }
     //Doing hacky stuff
-    if (localEcosystem["bundlers"].length === 0 &&
+    if (
+        localEcosystem["bundlers"].length === 0 &&
         (localEcosystem["seo-addons"].includes("nuxt") ||
             localEcosystem["seo-addons"].includes("next") ||
             localEcosystem["front-end-frameworks"].includes("vue") ||
@@ -114,6 +115,10 @@ module.exports = async function(metadata, contents) {
         if (data.message === "Not Found") {
             return {
                 message: `404: The repo '${repo}' or username '${metadata.name}' does not seem to exist`,
+            };
+        } else if (data.message && data.message.includes("rate limit")) {
+            return {
+                message: "The API Key is rate limited. Please come back later.",
             };
         }
         const { git_commits_url, default_branch } = data;
