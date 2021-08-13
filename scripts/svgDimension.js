@@ -20,7 +20,7 @@ for (let content of contents) {
     fs.writeFileSync(
         content,
         svg
-        .replace(/width="(.*?)"/g, 'width="50"')
+        .replace(/width="(.*?)"/, 'width="47"')
         .replace(/height="(.*?)"/, 'height="47"')
     );
 }

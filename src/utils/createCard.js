@@ -4,17 +4,22 @@ const fs = require("fs");
 
 module.exports = function({ ctx: card, contents }, theme) {
     let svg = ``;
-    let cy = 20;
-    let height = 20;
-    let width = -1;
-    let offsetY = 85;
-    let offsetX = 55;
+    let sectionSpace = 20;
+    let imageHeight = 20;
+    let imageWidth = -1;
+    let offsetSpaceY = 50;
+    let offsetIconsX = 55;
+    const svgHeight = (47 + 15) / 2;
+    const spaceStarter = (num) => {
+        return num > 10 ? num * 9 : num * 8.6;
+    };
     console.log(card);
     Object.keys(card).forEach((key) => {
         //css and html can get repeated cause css-frameworks contains css
         const unique = [...new Set(card[key])];
         let localSvg = ``;
-        let cx = 0;
+        const text = `My favourite ${key}:`;
+        let iconsX = 0 + spaceStarter(text.length);
         for (let item of unique) {
             //item is svg name
             const elem = contents.find((elem) => path.parse(elem).name === item);
@@ -22,27 +27,29 @@ module.exports = function({ ctx: card, contents }, theme) {
                 encoding: "utf-8",
             });
             if (svgContent) {
-                localSvg += `<g transform="translate(${cx},0)">${svgContent}</g>`;
-                cx += offsetX;
+                localSvg += `<g transform="translate(${iconsX},-${svgHeight})">${svgContent}</g>`;
+                iconsX += offsetIconsX;
             }
         }
-        if (cx > width) {
-            width = cx;
+        if (iconsX > imageWidth) {
+            //Size equal to the longest width
+            imageWidth = iconsX;
         }
         if (localSvg) {
             localSvg = `
-            <g class="section" transform="translate(0,${cy})">
-                <text y="0" x="0">My favourite ${key}:</text> 
-                <g class="icons" transform="translate(0,0)">${localSvg}</g> 
+            <g class="section" transform="translate(0,${sectionSpace})">
+                <text x="0" y="0">${text}</text> 
+                ${localSvg}
             </g>`;
             svg += localSvg;
-            cy += offsetY;
-            height += offsetY;
+            sectionSpace += offsetSpaceY;
+            //Adding the height
+            imageHeight += offsetSpaceY;
         }
     });
-    width += 10;
-    width = width < 520 ? 520 : width;
-    height += 10;
+    imageWidth += 10;
+    imageWidth = imageWidth < 520 ? 520 : imageWidth;
+    imageHeight += 10;
     console.log("Create card func invoked");
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"> <g transform="translate(20,20)">${svg}</g> </svg>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${imageWidth}" height="${imageHeight}" viewBox="0 0 ${imageWidth} ${imageHeight}"> <g transform="translate(20,20)">${svg}</g> </svg>`;
 };
