@@ -1,10 +1,14 @@
-# ⚡ awesome-stack
-Github Readme Stats for your favourite web dev stack.
-<br/>
+<p align="center">
+<img width="100px" src="https://api.iconify.design/logos:stackshare.svg" align="center" alt="awesome-stack hero icon" />
+<h1 align="center"> awesome-stack </h1>
+<p align="center"> Github Readme Stats for your favourite web dev stack.</p>
+  <p align="center">
+    <img src="https://github.com/Borrus-sudo/awesome-stack/actions/workflows/test.yml/badge.svg" align="center" alt="Test Badge" />
+    <img src="https://img.shields.io/github/issues/Borrus-sudo/awesome-stack" align="center" alt="Issue Badge" />
+    <img src="https://img.shields.io/github/stars/Borrus-sudo/awesome-stack" align="center" alt="Stars Badge" />
+  </p>
+</p>
 
-![TestWorkflow](https://github.com/Borrus-sudo/awesome-stack/actions/workflows/test.yml/badge.svg)
-![GitHub issues](https://img.shields.io/github/issues/Borrus-sudo/awesome-stack)
-![GitHub stars](https://img.shields.io/github/stars/Borrus-sudo/awesome-stack)
 <br/>
 
 # Why?
