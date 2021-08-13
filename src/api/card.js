@@ -22,7 +22,7 @@ router.get("/", async(req, res) => {
     const query = req.query;
     const ctx = await fetchInfo(query, contents);
     if (ctx.message) {
-        const statusCode = ctx.message.includes("404") ? 404 : 201;
+        const statusCode = ctx.message.includes("404") ? 404 : 500;
         res.status(statusCode).send(ctx);
         return;
     }
@@ -43,7 +43,7 @@ router.get("/json", async(req, res) => {
     const query = req.query;
     const ctx = await fetchInfo(query, contents);
     if (ctx.message) {
-        const statusCode = ctx.message.includes("404") ? 404 : 201;
+        const statusCode = ctx.message.includes("404") ? 404 : 500;
         res.status(statusCode).send(statusCode);
         return;
     }
