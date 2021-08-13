@@ -118,7 +118,7 @@ module.exports = async function(metadata, contents) {
             };
         } else if (data.message && data.message.includes("rate limit")) {
             return {
-                message: "The API Key is rate limited. Please come back later.",
+                message: "The API Key is rate limited. Please come back later. Sorry for the inconvenience",
             };
         }
         const { git_commits_url, default_branch } = data;

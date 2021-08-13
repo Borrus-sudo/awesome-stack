@@ -7,15 +7,21 @@ module.exports = function({ ctx: card, contents }, theme) {
     let sectionSpace = 20;
     let imageHeight = 20;
     let imageWidth = -1;
-    let offsetSpaceY = 50;
-    let offsetIconsX = 55;
-    const svgHeight = (47 + 15) / 2;
+    let offsetSpaceY = 42;
+    let offsetIconsX = 42;
+    const svgHeight = (40 + 15) / 2;
     const spaceStarter = (num) => {
-        return num > 10 ? num * 9 : num * 8.6;
+        return num - 14 > 10 ? num * 9 : num * 8.49;
     };
     console.log(card);
     Object.keys(card).forEach((key) => {
         //css and html can get repeated cause css-frameworks contains css
+        if (
+            ["html", "css", "javascript", "nodejs"].indexOf(key) !== -1 &&
+            card[key].length === 1
+        ) {
+            return;
+        }
         const unique = [...new Set(card[key])];
         let localSvg = ``;
         const text = `My favourite ${key}:`;
