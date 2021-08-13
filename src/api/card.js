@@ -44,11 +44,10 @@ router.get("/json", async(req, res) => {
     const ctx = await fetchInfo(query, contents);
     if (ctx.message) {
         const statusCode = ctx.message.includes("404") ? 404 : 500;
-        res.status(statusCode).send(statusCode);
+        res.status(statusCode).send(ctx);
         return;
     }
-    res.status(200);
-    res.json(ctx);
+    res.status(200).json(ctx);
 });
 
 module.exports = router;
