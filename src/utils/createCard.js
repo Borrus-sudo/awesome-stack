@@ -8,7 +8,7 @@ module.exports = function({ ctx: card, contents }, theme) {
     let imageHeight = 20;
     let imageWidth = -1;
     let offsetSpaceY = 42;
-    let offsetIconsX = 42;
+    let offsetIconsX = 47;
     const svgHeight = (40 + 15) / 2;
     const spaceStarter = (num) => {
         return num - 14 > 10 ? num * 9 : num * 8.49;
@@ -53,8 +53,8 @@ module.exports = function({ ctx: card, contents }, theme) {
             imageHeight += offsetSpaceY;
         }
     });
+    //Some extra spaces needed for design purposes
     imageWidth += 25;
-    // imageWidth = imageWidth < 500 ? 500 : imageWidth;
     imageHeight += 29;
     return `<svg xmlns="http://www.w3.org/2000/svg" class="card" width="${imageWidth}" height="${imageHeight}" viewBox="0 0 ${imageWidth} ${imageHeight}" fill="none">
             <style>
