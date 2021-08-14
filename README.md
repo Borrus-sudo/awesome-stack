@@ -14,7 +14,7 @@
 # Why?
 
 Existing github readme stats do not showcase the specific favourite technologies/tools. So here comes my app. It analyzes your repos and figures the the most used tooling and framework and creates a card. Currently only javascript tooling and ecosystem is supported. More coming in the future.
-I support all these things :
+<br/> I support all these things :
 ![image](https://user-images.githubusercontent.com/58482194/129444341-00a0efc8-d7db-4370-9c5c-ba83cdd39712.png)
 
 Endpoint:
