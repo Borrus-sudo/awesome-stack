@@ -4,7 +4,7 @@ const fs = require("fs");
 
 module.exports = function({ ctx: card, contents }, theme) {
     let svg = ``;
-    let sectionSpace = 40;
+    let sectionSpace = 47;
     let imageHeight = 20;
     let imageWidth = -1;
     let offsetSpaceY = 42;
@@ -55,7 +55,7 @@ module.exports = function({ ctx: card, contents }, theme) {
     });
     imageWidth += 25;
     // imageWidth = imageWidth < 500 ? 500 : imageWidth;
-    imageHeight += 25;
+    imageHeight += 29;
     return `<svg xmlns="http://www.w3.org/2000/svg" class="card" width="${imageWidth}" height="${imageHeight}" viewBox="0 0 ${imageWidth} ${imageHeight}" fill="none">
             <style>
                .title {
@@ -69,7 +69,7 @@ module.exports = function({ ctx: card, contents }, theme) {
                 }
             </style>
             <rect x="1" y="1" width="100%" height="100%" fill="#${themes[theme].bg_color}" stroke="#e4e2e2" stroke-opacity="1"/>
-            <text class="title" x="20" y="20">My Awesome Stack</text>
+            <text class="title" x="81.5" y="30">My Awesome Stack</text>
             <g transform="translate(20,20)">${svg}</g> 
         </svg>`;
 };
