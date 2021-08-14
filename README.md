@@ -15,16 +15,16 @@
 
 Existing github readme stats do not showcase the specific favourite technologies/tools. So here comes my app. It analyzes your repos and figures the the most used tooling and framework and creates a card. Currently only javascript tooling and ecosystem is supported. More coming in the future.
 
-# I support all these things :
+# awesome-stack support all these things :
 ![image](https://user-images.githubusercontent.com/58482194/129444341-00a0efc8-d7db-4370-9c5c-ba83cdd39712.png)
 
+# Themes 
+https://github.com/Borrus-sudo/awesome-stack/blob/master/src/utils/themes.js
+All themes @anuraghazra/github-readme-stats
 Endpoint:
 
 ` /api/v1/cards?name=your-github-username&repos=comma,separated,repos`
 
-## Important note
-
-CJ is not a contributor. Due to a weird shit mistake or bug (IDK) his name is appearing in the contributor list cause I used his create-express-API boiler plate and messed up in some steps.
 
 ## Setup
 
@@ -58,3 +58,6 @@ Starring this repo shall encourage me to do more open sourcing. So consider star
 
 - Create a card from the SVG
 - Acquiring a GitHub API key
+
+## Important note
+CJ is not a contributor. Due to a weird shit mistake or bug (IDK) his name is appearing in the contributor list cause I used his create-express-API boiler plate and messed up in some steps.
