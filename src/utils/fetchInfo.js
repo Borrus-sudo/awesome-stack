@@ -176,7 +176,6 @@ module.exports = async function(metadata, contents) {
         }
         card[key] = highest;
     });
-    console.log(card);
     card.html.unshift("html");
     card.css.unshift("css", ...card["css-frameworks"]);
     delete card["css-frameworks"];

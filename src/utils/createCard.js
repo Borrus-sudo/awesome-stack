@@ -68,7 +68,7 @@ module.exports = function({ ctx: card, contents }, theme) {
                     font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif;
                 }
             </style>
-            <rect x="1" y="1" width="100%" height="100%" fill="#${themes[theme].bg_color}" stroke="#e4e2e2" stroke-opacity="1"/>
+            <rect x="1" y="1" rx="0.5" width="99%" height="99%" fill="#${themes[theme].bg_color}" stroke="#e4e2e2" stroke-opacity="1"/>
             <text class="title" x="81.5" y="30">My Awesome Stack</text>
             <g transform="translate(20,20)">${svg}</g> 
         </svg>`;
