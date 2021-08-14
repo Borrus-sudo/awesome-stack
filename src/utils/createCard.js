@@ -4,7 +4,7 @@ const fs = require("fs");
 
 module.exports = function({ ctx: card, contents }, theme) {
     let svg = ``;
-    let sectionSpace = 20;
+    let sectionSpace = 40;
     let imageHeight = 20;
     let imageWidth = -1;
     let offsetSpaceY = 42;
@@ -17,7 +17,7 @@ module.exports = function({ ctx: card, contents }, theme) {
     Object.keys(card).forEach((key) => {
         //css and html can get repeated cause css-frameworks contains css
         if (
-            ["html", "css", "javascript", "nodejs"].indexOf(key) !== -1 &&
+            ["css", "javascript", "nodejs"].indexOf(key) !== -1 &&
             card[key].length === 1
         ) {
             return;
@@ -37,14 +37,14 @@ module.exports = function({ ctx: card, contents }, theme) {
                 iconsX += offsetIconsX;
             }
         }
-        if (iconsX > imageWidth) {
+        if ((iconsX) > imageWidth) {
             //Size equal to the longest width
             imageWidth = iconsX;
         }
         if (localSvg) {
             localSvg = `
             <g class="section" transform="translate(0,${sectionSpace})">
-                <text x="0" y="0">${text}</text> 
+                <text class="text" x="0" y="0">${text}</text> 
                 ${localSvg}
             </g>`;
             svg += localSvg;
@@ -53,9 +53,24 @@ module.exports = function({ ctx: card, contents }, theme) {
             imageHeight += offsetSpaceY;
         }
     });
-    imageWidth += 10;
-    imageWidth = imageWidth < 520 ? 520 : imageWidth;
-    imageHeight += 10;
+    imageWidth += 25;
+    // imageWidth = imageWidth < 500 ? 500 : imageWidth;
+    imageHeight += 25;
     console.log("Create card func invoked");
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="${imageWidth}" height="${imageHeight}" viewBox="0 0 ${imageWidth} ${imageHeight}"> <g transform="translate(20,20)">${svg}</g> </svg>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" class="card" width="${imageWidth}" height="${imageHeight}" viewBox="0 0 ${imageWidth} ${imageHeight}" fill="none">
+            <style>
+               .title {
+                   fill:#${themes[theme].title_color};
+                   font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif;
+                   font-weight:bold;
+                }
+                .text {
+                    fill:#${themes[theme].text_color};
+                    font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif;
+                }
+            </style>
+            <rect x="1" y="1" width="100%" height="100%" fill="#${themes[theme].bg_color}" stroke="#e4e2e2" stroke-opacity="1"/>
+            <text class="title" x="20" y="20">My Awesome Stack</text>
+            <g transform="translate(20,20)">${svg}</g> 
+        </svg>`;
 };
