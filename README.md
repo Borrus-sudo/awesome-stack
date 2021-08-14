@@ -20,8 +20,9 @@ Existing github readme stats do not showcase the specific favourite technologies
 
 # Themes 
 https://github.com/Borrus-sudo/awesome-stack/blob/master/src/utils/themes.js
-All themes @anuraghazra/github-readme-stats
-Endpoint:
+All themes @anuraghazra/github-readme-stats are supported.
+
+# Endpoint:
 
 ` /api/v1/cards?name=your-github-username&repos=comma,separated,repos`
 
