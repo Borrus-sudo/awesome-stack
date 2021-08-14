@@ -15,8 +15,8 @@
 
 Existing github readme stats do not showcase the specific favourite technologies/tools. So here comes my app. It analyzes your repos and figures the the most used tooling and framework and creates a card. Currently only javascript tooling and ecosystem is supported. More coming in the future.
 
-## awesome-stack support all these things :
-![image](https://user-images.githubusercontent.com/58482194/129444341-00a0efc8-d7db-4370-9c5c-ba83cdd39712.png)
+## awesome-stack supports all these things :
+![image](https://user-images.githubusercontent.com/58482194/129444524-1ee688b5-8b4d-47c7-9c0d-cbbc565a1cee.png)
 
 ## Themes 
 https://github.com/Borrus-sudo/awesome-stack/blob/master/src/utils/themes.js
