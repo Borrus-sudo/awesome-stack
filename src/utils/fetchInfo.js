@@ -162,7 +162,7 @@ module.exports = async function(metadata, contents) {
     // Figure out favourites from the ecosystem of tools used in repos
     const card = {};
     Object.keys(ecosystem).forEach((key) => {
-        const countMap = frequencyTableGenerator(new Set(ecosystem[key]));
+        const countMap = frequencyTableGenerator(ecosystem[key]);
         let highest = [];
         let highestCount = 0;
         for (const [val, count] of countMap) {
