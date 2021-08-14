@@ -13,7 +13,7 @@ module.exports = function({ ctx: card, contents }, theme) {
     const spaceStarter = (num) => {
         return num - 14 > 10 ? num * 9 : num * 8.49;
     };
-    console.log(card);
+    theme = themes[theme] ? theme : "default";
     Object.keys(card).forEach((key) => {
         //css and html can get repeated cause css-frameworks contains css
         if (
@@ -37,7 +37,7 @@ module.exports = function({ ctx: card, contents }, theme) {
                 iconsX += offsetIconsX;
             }
         }
-        if ((iconsX) > imageWidth) {
+        if (iconsX > imageWidth) {
             //Size equal to the longest width
             imageWidth = iconsX;
         }
@@ -56,7 +56,6 @@ module.exports = function({ ctx: card, contents }, theme) {
     imageWidth += 25;
     // imageWidth = imageWidth < 500 ? 500 : imageWidth;
     imageHeight += 25;
-    console.log("Create card func invoked");
     return `<svg xmlns="http://www.w3.org/2000/svg" class="card" width="${imageWidth}" height="${imageHeight}" viewBox="0 0 ${imageWidth} ${imageHeight}" fill="none">
             <style>
                .title {
