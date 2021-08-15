@@ -26,7 +26,7 @@ Existing GitHub readme stats do not showcase the specific favorite technologies/
 
 ## Themes 
 https://github.com/Borrus-sudo/awesome-stack/blob/master/src/utils/themes.js
-All themes of @anuraghazra github-readme-stats are supported.
+All themes by @anuraghazra's github-readme-stats are supported.
 
 ## Endpoint:
 
