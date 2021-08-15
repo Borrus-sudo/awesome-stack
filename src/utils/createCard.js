@@ -27,7 +27,9 @@ module.exports = function({ ctx: card, contents }, theme) {
         const unique = [...new Set(card[key])];
         let localSvg = ``;
         const text = `My favourite ${key}:`;
-        let iconsX = 0 + spaceStarter(text.length);
+        let iconsX =
+            0 +
+            (key !== "seo-addons" ? spaceStarter(text.length) : spaceStarter(10.1));
         for (let item of unique) {
             //item is svg name
             const elem = contents.find((elem) => path.parse(elem).name === item);

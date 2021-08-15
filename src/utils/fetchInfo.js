@@ -35,13 +35,7 @@ const svgIdentifier = (dependencies, ecosystem, contents) => {
             if (
                 dependency === name ||
                 dependency === `@${name}/core` ||
-                (dependency.includes(name) &&
-                    !dependency.includes(
-                        name !== "babel" ? "babel" : "somecrappadsdsds"
-                    ) &&
-                    !dependency.includes(
-                        name !== "eslint" ? "eslint" : "somecrappadsdsds"
-                    ))
+                dependency.startsWith(name)
             ) {
                 const { name: folderName } = path.parse(dir);
                 if (
