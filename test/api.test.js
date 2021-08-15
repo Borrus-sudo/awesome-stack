@@ -26,7 +26,7 @@ describe("GET /api/v1/cards/json", () => {
             .expect(
                 200, {
                     html: ["html"],
-                    css: ["css", "tailwindcss", "css"],
+                    css: ["css", "tailwindcss"],
                     javascript: ["javascript", "vue", "typescript"],
                     "testing-frameworks": [],
                     "seo-addons": [],
@@ -34,7 +34,7 @@ describe("GET /api/v1/cards/json", () => {
                     nodejs: ["nodejs"],
                     platforms: [],
                     bundlers: ["webpack"],
-                    tools: ["eslint", "prettier", "babel", "postcss"],
+                    tools: ["eslint", "prettier", "postcss"],
                 },
                 done
             );
