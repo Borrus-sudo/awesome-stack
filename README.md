@@ -57,7 +57,6 @@ Starring this repo shall encourage me to do more open sourcing. So consider star
 
 # TO-DO
 
-- Create a card from the SVG
 - Acquiring a GitHub API key
 
 ## Important note
