@@ -12,10 +12,10 @@
 <br/>
 
 ## Features:
-🌈 Wide Variety Of Themes <br/>
+🌈Supports a wide Variety Of themes and has high-quality icons for all your favorite tech  <br/>
 🛠 Analyzes the most used technologies, frameworks, toolings, and figures out the most used stuff <br/>
 🗂 Easy to get started with and creates a card based on it! <br/>
-☄ Prevents from cluttering your readme by requiring you to put a simple link
+☄ Prevents the readme from cluttering by requiring you to put a simple link
 
 ## Why?
 
