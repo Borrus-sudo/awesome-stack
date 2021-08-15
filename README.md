@@ -11,9 +11,15 @@
 
 <br/>
 
-# Why?
+## Features:
+🌈 Wide Variety Of Themes <br/>
+🛠 Analyzes the most used technologies, frameworks, toolings, and figures out the most used stuff <br/>
+🗂 Easy to get started with and creates a card based on it! <br/>
+☄ Prevents from cluttering your readme by requiring you to put a simple link
 
-Existing github readme stats do not showcase the specific favourite technologies/tools. So here comes my app. It analyzes your repos and figures the the most used tooling and framework and creates a card. Currently only javascript tooling and ecosystem is supported. More coming in the future.
+## Why?
+
+Existing GitHub readme stats do not showcase the specific favorite technologies/tools. So here comes my app. It analyzes your repositories and figures the most used toolings and framework. Based on the analyzed data, it creates a card. Currently, only javascript tooling and ecosystem are supported. More coming in the future.
 
 ## awesome-stack supports all these things :
 ![image](https://user-images.githubusercontent.com/58482194/129444524-1ee688b5-8b4d-47c7-9c0d-cbbc565a1cee.png)
@@ -24,8 +30,15 @@ All themes of @anuraghazra github-readme-stats are supported.
 
 ## Endpoint:
 
-` /api/v1/cards?name=your-github-username&repos=comma,separated,repos`
+` /api/v1/cards?name=your-github-username&repos=comma,separated,repos,upto,5&theme=your-theme`
 
+Add this in your markup:
+```markdown
+![MyAwesomeWebDevStack](https://awesome-stack.glitch.me/api/v1/cards?name=Borrus-sudo&repos=jsgandalf,vue-generator-graph,awesome-stack&theme=dracula)
+```
+## Examples
+![Example 1](./examples/Borrus-sudo.svg)
+![Example 2](./examples/bencodezen.svg)
 
 ## Setup
 
@@ -60,4 +73,4 @@ Starring this repo shall encourage me to do more open sourcing. So consider star
 - Acquiring a GitHub API key
 
 ## Important note
-CJ is not a contributor. Due to a weird shit mistake or bug (IDK) his name is appearing in the contributor list cause I used his create-express-API boiler plate and messed up in some steps.
+CJ is not a contributor. Due to a weird shit mistake or bug (IDK), his name is appearing in the contributor list cause I used his create-express-API boilerplate and messed up in some steps.
