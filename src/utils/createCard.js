@@ -5,10 +5,12 @@ const fs = require("fs");
 module.exports = function({ ctx: card, contents }, theme) {
     let svg = ``;
     let sectionSpace = 47;
+    let animationDelay = 300;
     let imageHeight = 20;
     let imageWidth = -1;
-    let offsetSpaceY = 42;
-    let offsetIconsX = 47;
+    const offsetSpaceY = 42;
+    const offsetIconsX = 47;
+    const offsetAnimationDelay = 150;
     const svgHeight = (40 + 15) / 2;
     const spaceStarter = (num) => {
         return num - 14 > 10 ? num * 9 : num * 8.49;
@@ -43,7 +45,7 @@ module.exports = function({ ctx: card, contents }, theme) {
         }
         if (localSvg) {
             localSvg = `
-            <g class="section" transform="translate(0,${sectionSpace})">
+            <g class="section" style="animation-delay:${animationDelay}ms;" transform="translate(0,${sectionSpace})">
                 <text class="text" x="0" y="0">${text}</text> 
                 ${localSvg}
             </g>`;
@@ -51,6 +53,7 @@ module.exports = function({ ctx: card, contents }, theme) {
             sectionSpace += offsetSpaceY;
             //Adding the height
             imageHeight += offsetSpaceY;
+            animationDelay += offsetAnimationDelay;
         }
     });
     //Some extra spaces needed for design purposes
@@ -67,9 +70,21 @@ module.exports = function({ ctx: card, contents }, theme) {
                     fill:#${themes[theme].text_color};
                     font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif;
                 }
+                .section {
+                    opacity: 0;
+                    animation: fadeInAnimation 0.3s ease-in-out forwards;
+                }
+                @keyframes fadeInAnimation {
+                    from {
+                        opacity: 0;
+                    }
+                    to {
+                        opacity: 1;
+                    }
+                }
             </style>
-            <rect x="1" y="1" rx="0.5" width="99%" height="99%" fill="#${themes[theme].bg_color}" stroke="#e4e2e2" stroke-opacity="1"/>
-            <text class="title" x="81.5" y="30">My Awesome Stack</text>
+            <rect x="1" y="1" rx="4.5" width="99%" height="99%" fill="#${themes[theme].bg_color}" stroke="#e4e2e2" stroke-opacity="1"/>
+            <text class="title section" x="81.5" y="30" style="animation-delay:150ms;">My Awesome Stack</text>
             <g transform="translate(20,20)">${svg}</g> 
         </svg>`;
 };
