@@ -27,7 +27,7 @@ Existing GitHub readme stats do not showcase the specific favorite technologies/
 ## Themes 
 https://github.com/Borrus-sudo/awesome-stack/blob/master/src/utils/themes.js
 All themes by @anuraghazra's github-readme-stats are supported. <br/>
-Checkout all themes ![here](./themes.md)
+Checkout all themes [here](./themes.md)
 
 ## Endpoint:
 
@@ -44,7 +44,8 @@ Add this in your markup:
 | `merko`: <br/> ![merko](./examples/themes/merko.svg) | `gruvbox`: <br/> ![gruvbox](./examples/themes/gruvbox.svg) | `tokyonight`: <br/> ![tokyonight](./examples/themes/tokyonight.svg) | `onedark`: <br/> ![onedark](./examples/themes/onedark.svg) | 
 | `cobalt`: <br/> ![cobalt](./examples/themes/cobalt.svg) | `synthwave`: <br/> ![synthwave](./examples/themes/synthwave.svg)  | `discord_old_blurple`: <br/> ![discord_old_blurple](./examples/themes/discord_old_blurple.svg) 
 <br/>
-Checkout all themes ![here](./themes.md)
+
+Checkout all themes [here](./themes.md)
 
 ## Setup
 
