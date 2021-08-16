@@ -44,7 +44,7 @@ Add this in your markup:
 | `merko`: <br/> ![merko](./examples/themes/merko.svg) | `gruvbox`: <br/> ![gruvbox](./examples/themes/gruvbox.svg) | `tokyonight`: <br/> ![tokyonight](./examples/themes/tokyonight.svg) | `onedark`: <br/> ![onedark](./examples/themes/onedark.svg) | 
 | `cobalt`: <br/> ![cobalt](./examples/themes/cobalt.svg) | `synthwave`: <br/> ![synthwave](./examples/themes/synthwave.svg)  | `discord_old_blurple`: <br/> ![discord_old_blurple](./examples/themes/discord_old_blurple.svg) 
 <br/>
-Checkout all themes [here](./themes.md)
+Checkout all themes ![here](./themes.md)
 
 ## Setup
 
