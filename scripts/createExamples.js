@@ -37,7 +37,7 @@ Object.keys(themes).forEach((theme) => {
     fs.writeFileSync(`./examples/themes/${theme}.svg`, content);
     if (count === 4) {
         doc += `| \n`;
-
+        count = 0;
     }
     doc += `| \`${theme}\`: <br/> ![${theme}](./examples/themes/${theme}.svg) `;
 });
