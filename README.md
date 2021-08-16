@@ -26,7 +26,8 @@ Existing GitHub readme stats do not showcase the specific favorite technologies/
 
 ## Themes 
 https://github.com/Borrus-sudo/awesome-stack/blob/master/src/utils/themes.js
-All themes by @anuraghazra's github-readme-stats are supported.
+All themes by @anuraghazra's github-readme-stats are supported. <br/>
+Checkout all themes ![here](./themes.md)
 
 ## Endpoint:
 
@@ -37,8 +38,13 @@ Add this in your markup:
 ![MyAwesomeWebDevStack](https://awesome-stack.glitch.me/api/v1/cards?name=Borrus-sudo&repos=jsgandalf,vue-generator-graph,awesome-stack&theme=dracula)
 ```
 ## Examples
-![Example 1](./examples/Borrus-sudo.svg)
-![Example 2](./examples/bencodezen.svg)
+|||| 
+ |:--:|:--:|:--:| 
+| `default`: <br/> ![default](./examples/themes/default.svg) | `dark`: <br/> ![dark](./examples/themes/dark.svg) | `radical`: <br/> ![radical](./examples/themes/radical.svg) | 
+| `merko`: <br/> ![merko](./examples/themes/merko.svg) | `gruvbox`: <br/> ![gruvbox](./examples/themes/gruvbox.svg) | `tokyonight`: <br/> ![tokyonight](./examples/themes/tokyonight.svg) | `onedark`: <br/> ![onedark](./examples/themes/onedark.svg) | 
+| `cobalt`: <br/> ![cobalt](./examples/themes/cobalt.svg) | `synthwave`: <br/> ![synthwave](./examples/themes/synthwave.svg)  | `discord_old_blurple`: <br/> ![discord_old_blurple](./examples/themes/discord_old_blurple.svg) 
+<br/>
+Checkout all themes [here](./themes.md)
 
 ## Setup
 
