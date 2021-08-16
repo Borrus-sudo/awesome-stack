@@ -77,12 +77,6 @@ const themes = {
         text_color: "f1f1eb",
         bg_color: "272822",
     },
-    vue: {
-        title_color: "41b883",
-        icon_color: "41b883",
-        text_color: "273849",
-        bg_color: "fffefe",
-    },
     "vue-dark": {
         title_color: "41b883",
         icon_color: "41b883",
@@ -100,12 +94,6 @@ const themes = {
         icon_color: "ffeb95",
         text_color: "7fdbca",
         bg_color: "011627",
-    },
-    buefy: {
-        title_color: "7957d5",
-        icon_color: "ff3860",
-        text_color: "363636",
-        bg_color: "ffffff",
     },
     "blue-green": {
         title_color: "2f97c1",
@@ -172,12 +160,6 @@ const themes = {
         icon_color: "89ddff",
         text_color: "a6accd",
         bg_color: "292d3e",
-    },
-    graywhite: {
-        title_color: "24292e",
-        icon_color: "24292e",
-        text_color: "24292e",
-        bg_color: "ffffff",
     },
     "vision-friendly-dark": {
         title_color: "ffb000",
